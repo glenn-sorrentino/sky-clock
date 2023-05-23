@@ -39,21 +39,21 @@ def num_to_words(num, join_tens=False):
 
 # Minute rhymes
 minute_rhymes = {
-    'zero': ["let's go for a walk", "I'm bored, let's talk", "put on warm fuzzy socks"],
-    'one': ["the day has just begun", "let's have some fun", "enjoy the sun", "abolish guns"],
-    'two': ["I lost my shoe", "paint your nails blue", "I don't need any shoes", "there's so much to do"],
-    'three': ["the pollinating bee", "climb the oak trees", "the Peruvian monkey", "may you always be free"],
-    'four': ["open the door", "roll on the floor", "avoid the stores"],
-    'five': ["let's go for a drive", "brah, high five", "I feel so alive"],
-    'six': ["pick up sticks", "a mason lays bricks", "Allie can't stop giving licks", "all things can be fixed"],
+    'zero': ["let's go for a walk", "I'm bored, you wanna talk?", "put on warm fuzzy socks", "dump GameStop stock", "party on our block!"],
+    'one': ["the day has just begun", "let's have some fun", "enjoy the sun", "abolish war and guns", "fight the system, it's just begun", "read a book for fun"],
+    'two': ["paint your nails blue", "we don't need any shoes", "there's so much to do", "free the animals in the zoo", "two books, one for me, one for you"],
+    'three': ["the pollinating bee", "climb the oak trees", "I once had a Peruvian monkey", "may you always be free", "busy as a bee", "more than what you see", "free thought, let it be"],
+    'four': ["open the magic door", "roll on the floor", "avoid the stores", "let's explore the shore", "end all war", "ideas, let them pour", "writing code we adore"],
+    'five': ["let's go for a drive", "pretty UI", "brah, high five", "may you feel so alive", "let's strive to thrive", "always question why", "with books, imaginations thrive"],
+    'six': ["pick up sticks", "a mason lays bricks", "Allie can't stop giving licks", "all things can be fixed", "learn magic tricks"],
     'seven': ["nothing rhymes with seven", "stairway to heaven", "manna is bread without leaven"],
-    'eight': ["it's never too late", "I'm feeling great"],
-    'nine': ["everything's fine", "I see you shine", "I love that you're mine"],
-    'ten': ["let's go to the den", "I see a wren", "I'm using my pen"],
+    'eight': ["it's never too late", "Skyler, you're so great", "there's no room for hate", "books stimulate"],
+    'nine': ["you're fine and divine", "you make the stars align", "everything's going fine", "I see you shine", "I love that you're mine", "your code and mine"],
+    'ten': ["a fireplace in the den", "an egg-laying chicken is a hen", "make art with ink and pen", "pushing changes again"],
     'eleven': ["almost seven", "like a slice of heaven", "I'll be home by seven"],
-    'twelve': ["on the shelf", "by myself", "like an elf"],
-    'teen': ["it's time to clean", "put down the screen"],
-    'ty': ["there's a birdie", "feeling pretty", "visiting the city", "dancing ditty", "being witty"]
+    'twelve': ["elf on the shelf", "I like pooping by myself", "pretty plants on the shelf", "stories the library delves", "pick a book from the shelf"],
+    'teen': ["it's not a bad idea to clean", "put down the screen", "always follow your dreams", "revolution is clean", "challenge the line", "on cloud nine with a good storyline"],
+    'ty': ["let's feed the birdies", "you look so pretty", "let's visit the city", "Skyler, you're so witty"]
 }
 
 def create_rhyme(hour, minute):
