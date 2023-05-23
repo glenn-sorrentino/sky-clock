@@ -177,7 +177,7 @@ while True:
     wrap_rhyme = textwrap.wrap(current_rhyme, width=26)
 
     for i, line in enumerate(wrap_rhyme):
-        y_text = 52 + i*20  # the y-position for each line of text
+        y_text = 54 + i*20  # the y-position for each line of text
         draw.text((epd.height//2, y_text), line, font=font16, fill=0, anchor='mm')
 
     # Update the display
