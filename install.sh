@@ -26,6 +26,8 @@ else
 fi
 
 cat > /home/pi/generate_rhymes.py << EOL
+#!/usr/bin/env python3
+
 import random
 
 def num_to_words(num, join_tens=False):
@@ -96,33 +98,6 @@ def create_rhyme(hour, minute):
     rhyme = f"It's {num_to_words(hour_12).lower()} {minute_word}, {minute_rhyme}."
     return rhyme
 
-def display_splash_screens(epd, image_path1, image_path2, display_time):
-    for image_path in [image_path1, image_path2]:
-        print(f'Displaying splash screen: {image_path}')
-        image = Image.open(image_path).convert("L")
-
-        target_height = int(epd.width * 0.75)
-        height_ratio = target_height / image.height
-        target_width = int(image.width * height_ratio)
-
-        image = image.resize((target_width, target_height), Image.ANTIALIAS)
-        image_bw = Image.new("1", (epd.height, epd.width), 255)
-        paste_x = (epd.height - target_width) // 2
-        paste_y = (epd.width - target_height) // 2
-        image_bw.paste(image, (paste_x, paste_y))
-
-        epd.display(epd.getbuffer(image_bw))
-        time.sleep(display_time)
-        epd.init()
-
-# Download splash screen images
-wget https://raw.githubusercontent.com/scidsg/brand-resources/main/logos/splash-sm.png 
-
-# Display splash screens
-splash_image_path1 = "/home/pi/splash-sm.png"
-splash_image_path2 = "/home/pi/splash-sm.png"
-display_splash_screens(epd, splash_image_path1, splash_image_path2, 3)
-
 # Main execution
 with open('/home/pi/rhymes.txt', 'w') as rhymes_file:
     for hour in range(24):
@@ -135,6 +110,8 @@ python3 /home/pi/generate_rhymes.py
 
 # Create a new script to display status on the e-ink display
 cat > /home/pi/kid_clock.py << EOL
+#!/usr/bin/env python3
+
 import os
 import sys
 import time
@@ -157,6 +134,30 @@ image = Image.new('1', (epd.height, epd.width), 255)
 draw = ImageDraw.Draw(image)
 font16 = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 16)
 font11 = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 11)
+
+def display_splash_screens(epd, image_path1, image_path2, display_time):
+    for image_path in [image_path1, image_path2]:
+        print(f'Displaying splash screen: {image_path}')
+        image = Image.open(image_path).convert("L")
+
+        target_height = int(epd.width * 0.75)
+        height_ratio = target_height / image.height
+        target_width = int(image.width * height_ratio)
+
+        image = image.resize((target_width, target_height), Image.ANTIALIAS)
+        image_bw = Image.new("1", (epd.height, epd.width), 255)
+        paste_x = (epd.height - target_width) // 2
+        paste_y = (epd.width - target_height) // 2
+        image_bw.paste(image, (paste_x, paste_y))
+
+        epd.display(epd.getbuffer(image_bw))
+        time.sleep(display_time)
+        epd.init()
+
+# Display splash screens
+splash_image_path1 = "/home/pi/splash-sm.png"
+splash_image_path2 = "/home/pi/splash-sm-product.png"
+display_splash_screens(epd, splash_image_path1, splash_image_path2, 3)
 
 while True:
     # Fetch the current time
@@ -185,6 +186,10 @@ while True:
     # Wait for 60 seconds
     time.sleep(60)
 EOL
+
+# Download splash screen images
+wget -P /home/pi/ https://raw.githubusercontent.com/scidsg/brand-resources/main/logos/splash-sm.png
+wget -P /home/pi/ https://raw.githubusercontent.com/glenn-sorrentino/sky-clock/main/logos/splash-sm-product.png
 
 # Create a new script to display status on the e-ink display
 cat > /etc/systemd/system/kidclock.service << EOL
