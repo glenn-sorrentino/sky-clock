@@ -53,7 +53,7 @@ minute_rhymes = {
     'nine': ["you're fine and divine", "you make the stars align", "everything's going fine", "I see you shine", "I love that you're mine", "your code and mine"],
     'ten': ["a fireplace in the den", "an egg-laying chicken is a hen", "make art with ink and pen", "pushing changes again"],
     'eleven': ["almost seven", "like a slice of heaven", "I'll be home by seven"],
-    'twelve': ["galaxy on the shelf", "happy plants on the shelf", I like pooping by myself", "pretty plants on the shelf", "be proud of yourself", stories the library delves", "pick a book from the shelf"],
+    'twelve': ["galaxy on the shelf", "happy plants on the shelf", "I like pooping by myself", "pretty plants on the shelf", "be proud of yourself", "stories the library delves", "pick a book from the shelf"],
     'teen': ["it's not a bad idea to clean", "put down the screen", "always follow your dreams", "revolution is clean", "challenge the line", "on cloud nine with a good storyline"],
     'ty': ["let's feed the birdies", "Skyler you're so pretty", "let's visit the city", "Skyler, you're so witty"]
 }
