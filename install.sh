@@ -51,9 +51,9 @@ minute_rhymes = {
     'nine': ["you're fine and divine", "you make the stars align", "everything's going fine", "I see you shine", "I love that you're mine", "your code and mine"],
     'ten': ["a fireplace in the den", "an egg-laying chicken is a hen", "make art with ink and pen", "pushing changes again"],
     'eleven': ["almost seven", "like a slice of heaven", "I'll be home by seven"],
-    'twelve': ["elf on the shelf", "I like pooping by myself", "pretty plants on the shelf", "stories the library delves", "pick a book from the shelf"],
+    'twelve': ["galaxy on the shelf", "happy plants on the shelf", I like pooping by myself", "pretty plants on the shelf", "be proud of yourself", stories the library delves", "pick a book from the shelf"],
     'teen': ["it's not a bad idea to clean", "put down the screen", "always follow your dreams", "revolution is clean", "challenge the line", "on cloud nine with a good storyline"],
-    'ty': ["let's feed the birdies", "you look so pretty", "let's visit the city", "Skyler, you're so witty"]
+    'ty': ["let's feed the birdies", "Skyler you're so pretty", "let's visit the city", "Skyler, you're so witty"]
 }
 
 def create_rhyme(hour, minute):
@@ -95,6 +95,33 @@ def create_rhyme(hour, minute):
 
     rhyme = f"It's {num_to_words(hour_12).lower()} {minute_word}, {minute_rhyme}."
     return rhyme
+
+def display_splash_screens(epd, image_path1, image_path2, display_time):
+    for image_path in [image_path1, image_path2]:
+        print(f'Displaying splash screen: {image_path}')
+        image = Image.open(image_path).convert("L")
+
+        target_height = int(epd.width * 0.75)
+        height_ratio = target_height / image.height
+        target_width = int(image.width * height_ratio)
+
+        image = image.resize((target_width, target_height), Image.ANTIALIAS)
+        image_bw = Image.new("1", (epd.height, epd.width), 255)
+        paste_x = (epd.height - target_width) // 2
+        paste_y = (epd.width - target_height) // 2
+        image_bw.paste(image, (paste_x, paste_y))
+
+        epd.display(epd.getbuffer(image_bw))
+        time.sleep(display_time)
+        epd.init()
+
+# Download splash screen images
+wget https://raw.githubusercontent.com/scidsg/brand-resources/main/logos/splash-sm.png 
+
+# Display splash screens
+splash_image_path1 = "/home/pi/splash-sm.png"
+splash_image_path2 = "/home/pi/splash-sm.png"
+display_splash_screens(epd, splash_image_path1, splash_image_path2, 3)
 
 # Main execution
 with open('/home/pi/rhymes.txt', 'w') as rhymes_file:
@@ -146,7 +173,7 @@ while True:
     draw.text((epd.height//2, 10), current_time, font = font11, fill = 0, anchor='mm')
 
     # Wrap the rhyme text
-    wrap_rhyme = textwrap.wrap(current_rhyme, width=28)
+    wrap_rhyme = textwrap.wrap(current_rhyme, width=26)
 
     for i, line in enumerate(wrap_rhyme):
         y_text = 52 + i*20  # the y-position for each line of text
