@@ -42,11 +42,11 @@ minute_rhymes = {
     'zero': ["let's go for a walk", "I'm bored, let's talk", "put on warm fuzzy socks"],
     'one': ["the day has just begun", "let's have some fun", "enjoy the sun", "abolish guns"],
     'two': ["I lost my shoe", "paint your nails blue", "I don't need any shoes", "there's so much to do"],
-    'three': ["the pollinating bee", "climb the oak trees", "the Peruvian monkey", ""],
-    'four': ["open the door", "clean the floor"],
-    'five': ["let's go for a drive", "brah, high five"],
-    'six': ["pick up sticks", "count your mouse clicks"],
-    'seven': ["it's almost eleven", "stairway to heaven"],
+    'three': ["the pollinating bee", "climb the oak trees", "the Peruvian monkey", "may you always be free"],
+    'four': ["open the door", "roll on the floor", "avoid the stores"],
+    'five': ["let's go for a drive", "brah, high five", "I feel so alive"],
+    'six': ["pick up sticks", "a mason lays bricks", "Allie can't stop giving licks", "all things can be fixed"],
+    'seven': ["nothing rhymes with seven", "stairway to heaven", "manna is bread without leaven"],
     'eight': ["it's never too late", "I'm feeling great"],
     'nine': ["everything's fine", "I see you shine", "I love that you're mine"],
     'ten': ["let's go to the den", "I see a wren", "I'm using my pen"],
@@ -97,7 +97,7 @@ def create_rhyme(hour, minute):
     return rhyme
 
 # Main execution
-with open('rhymes.txt', 'w') as rhymes_file:
+with open('/home/pi/rhymes.txt', 'w') as rhymes_file:
     for hour in range(24):
         for minute in range(60):
             rhymes_file.write(create_rhyme(hour, minute) + "\n")
@@ -117,7 +117,7 @@ from waveshare_epd import epd2in13_V3
 from PIL import Image, ImageDraw, ImageFont
 
 # Fetch rhymes from the file
-with open('rhymes.txt', 'r') as rhymes_file:
+with open('/home/pi/rhymes.txt', 'r') as rhymes_file:
     rhymes = rhymes_file.readlines()
 
 # Setup the e-ink display
@@ -183,6 +183,7 @@ sudo chmod 644 /etc/systemd/system/kidclock.service
 sudo systemctl daemon-reload
 sudo systemctl enable kidclock.service
 sudo systemctl start kidclock.service
+sudo systemctl status kidclock.service
 
 # Start the kid clock
 python3 /home/pi/kid_clock.py &
