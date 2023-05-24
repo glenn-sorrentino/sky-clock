@@ -135,29 +135,25 @@ draw = ImageDraw.Draw(image)
 font36 = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 36)
 font16 = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 16)
 
-def display_splash_screens(epd, image_path1, image_path2, display_time, new_height):
+def display_splash_screens(epd, image_path1, image_path2, display_time):
     for image_path in [image_path1, image_path2]:
         print(f'Displaying splash screen: {image_path}')
         image = Image.open(image_path).convert("L")
-
-        # Calculate new width while maintaining the aspect ratio
         aspect_ratio = image.width / image.height
-        new_width = int(new_height * aspect_ratio)
-        
+        new_width = epd.width
+        new_height = int(new_width / aspect_ratio)
         image = image.resize((new_width, new_height), Image.ANTIALIAS)
-        image_bw = Image.new("1", (epd.height, epd.width), 255)
-        image_bw.paste(image, (0, 0))
+        image_bw = Image.new("1", (epd.width, epd.height), 255)  # width and height in correct order
+        image_bw.paste(image, ((epd.width - new_width) // 2, (epd.height - new_height) // 2))
 
-        rotated_image_bw = image_bw.rotate(-90, expand=True)
-        epd.display(epd.getbuffer(rotated_image_bw))
+        epd.display(epd.getbuffer(image_bw))
         time.sleep(display_time)
         epd.init()
 
 # Display splash screens
 splash_image_path1 = "/home/pi/splash-sm.png"
 splash_image_path2 = "/home/pi/splash-sm-product.png"
-new_height = 250  # or any value you prefer
-display_splash_screens(epd, splash_image_path1, splash_image_path2, 3, new_height)
+display_splash_screens(epd, splash_image_path1, splash_image_path2, 3)
 
 while True:
     # Fetch the current time
