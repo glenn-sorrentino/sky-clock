@@ -151,8 +151,8 @@ def display_splash_screens(epd, image_path1, image_path2, display_time):
         epd.init()
 
 # Display splash screens
-splash_image_path1 = "/home/pi/splash-sm.png"
-splash_image_path2 = "/home/pi/splash-sm-product.png"
+splash_image_path1 = "/home/pi/splash-lg.png"
+splash_image_path2 = "/home/pi/splash-sky-clock.png"
 display_splash_screens(epd, splash_image_path1, splash_image_path2, 3)
 
 while True:
@@ -187,8 +187,8 @@ while True:
 EOL
 
 # Download splash screen images
-wget -P /home/pi/ https://raw.githubusercontent.com/scidsg/brand-resources/main/logos/splash-sm.png
-wget -P /home/pi/ https://raw.githubusercontent.com/glenn-sorrentino/sky-clock/main/logos/splash-sm-product.png
+wget -P /home/pi/ https://raw.githubusercontent.com/scidsg/brand-resources/main/logos/splash-lg.png
+wget -P /home/pi/ https://raw.githubusercontent.com/glenn-sorrentino/sky-clock/main/logos/splash-sky-clock.png
 
 # Create a new script to display status on the e-ink display
 cat > /etc/systemd/system/kidclock.service << EOL
