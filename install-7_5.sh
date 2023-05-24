@@ -130,34 +130,34 @@ epd.init()
 epd.Clear()
 
 # Prepare for drawing
-image = Image.new('1', (epd.height, epd.width), 255)
+image = Image.new('1', (epd.width, epd.height), 255)  # width and height in correct order
 draw = ImageDraw.Draw(image)
+font36 = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 36)
 font16 = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 16)
-font11 = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 11)
 
-def display_splash_screens(epd, image_path1, image_path2, display_time):
+def display_splash_screens(epd, image_path1, image_path2, display_time, new_height):
     for image_path in [image_path1, image_path2]:
         print(f'Displaying splash screen: {image_path}')
         image = Image.open(image_path).convert("L")
 
-        target_height = int(epd.width * 0.75)
-        height_ratio = target_height / image.height
-        target_width = int(image.width * height_ratio)
-
-        image = image.resize((target_width, target_height), Image.ANTIALIAS)
+        # Calculate new width while maintaining the aspect ratio
+        aspect_ratio = image.width / image.height
+        new_width = int(new_height * aspect_ratio)
+        
+        image = image.resize((new_width, new_height), Image.ANTIALIAS)
         image_bw = Image.new("1", (epd.height, epd.width), 255)
-        paste_x = (epd.height - target_width) // 2
-        paste_y = (epd.width - target_height) // 2
-        image_bw.paste(image, (paste_x, paste_y))
+        image_bw.paste(image, (0, 0))
 
-        epd.display(epd.getbuffer(image_bw))
+        rotated_image_bw = image_bw.rotate(-90, expand=True)
+        epd.display(epd.getbuffer(rotated_image_bw))
         time.sleep(display_time)
         epd.init()
 
 # Display splash screens
 splash_image_path1 = "/home/pi/splash-sm.png"
 splash_image_path2 = "/home/pi/splash-sm-product.png"
-display_splash_screens(epd, splash_image_path1, splash_image_path2, 3)
+new_height = 250  # or any value you prefer
+display_splash_screens(epd, splash_image_path1, splash_image_path2, 3, new_height)
 
 while True:
     # Fetch the current time
@@ -168,20 +168,23 @@ while True:
     current_rhyme = rhymes[rhyme_index].strip()
 
     # Clear the image
-    draw.rectangle([(0,0),(epd.height, epd.width)], fill = 255)
+    draw.rectangle([(0,0),(epd.width, epd.height)], fill = 255)  # width and height in correct order
 
     # Draw the time and the rhyme
-    draw.text((epd.height//2, 10), current_time, font = font11, fill = 0, anchor='mm')
+    draw.text((10, 10), current_time, font = font16, fill = 0)  # No need for the anchor, text will start from top-left
 
     # Wrap the rhyme text
     wrap_rhyme = textwrap.wrap(current_rhyme, width=26)
 
     for i, line in enumerate(wrap_rhyme):
-        y_text = 54 + i*20  # the y-position for each line of text
-        draw.text((epd.height//2, y_text), line, font=font16, fill=0, anchor='mm')
+        y_text = 54 + i*36  # the y-position for each line of text (adjusted to 36 to match the font size)
+        draw.text((10, y_text), line, font=font36, fill=0)  # start text from left, adjusted to each new line
+
+    # Rotate the image
+    rotated_image = image.rotate(-90, expand=True)  # rotate clockwise
 
     # Update the display
-    epd.display(epd.getbuffer(image))
+    epd.display(epd.getbuffer(rotated_image))
 
     # Wait for 60 seconds
     time.sleep(60)
