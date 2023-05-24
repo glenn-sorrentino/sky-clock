@@ -167,14 +167,14 @@ while True:
     draw.rectangle([(0,0),(epd.width, epd.height)], fill = 255)  # width and height in correct order
 
     # Draw the time and the rhyme
-    draw.text((10, 10), current_time, font = font16, fill = 0)  # No need for the anchor, text will start from top-left
+    draw.text((40, 40), current_time, font = font16, fill = 0)  # No need for the anchor, text will start from top-left
 
     # Wrap the rhyme text
     wrap_rhyme = textwrap.wrap(current_rhyme, width=26)
 
     for i, line in enumerate(wrap_rhyme):
-        y_text = 54 + i*36  # the y-position for each line of text (adjusted to 36 to match the font size)
-        draw.text((10, y_text), line, font=font36, fill=0)  # start text from left, adjusted to each new line
+        y_text = 84 + i*42  # the y-position for each line of text (adjusted to 36 to match the font size)
+        draw.text((30, y_text), line, font=font36, fill=0)  # start text from left, adjusted to each new line
 
     # Rotate the image
     rotated_image = image.rotate(-90, expand=True)  # rotate clockwise
