@@ -145,7 +145,7 @@ def display_splash_screens(epd, image_path1,  display_time):
         aspect_ratio = image.width / image.height
         new_width = epd.width
         new_height = int(new_width / aspect_ratio)
-        image = image.resize((new_width, new_height), Image.ANTIALIAS)
+        image = image.resize((new_width, new_height), Image.LANCZOS)
         image_bw = Image.new("1", (epd.width, epd.height), 255)
         image_bw.paste(image, ((epd.width - new_width) // 2, (epd.height - new_height) // 2))
 
@@ -162,7 +162,9 @@ def generate_rhymes():
     with open('/home/pi/rhymes.txt', 'w') as rhymes_file:
         for hour in range(24):
             for minute in range(60):
-                rhymes_file.write(create_rhyme(hour, minute) + "\n")
+                rhyme = create_rhyme(hour, minute)
+                print(f'Generating rhyme for {hour}:{minute} -> {rhyme}')  # log the rhyme
+                rhymes_file.write(rhyme + "\n")
 
 while True:
     # Fetch the current time
@@ -216,8 +218,8 @@ ExecStart=/usr/bin/python3 /home/pi/kid_clock.py
 Restart=always
 User=pi
 Group=pi
-StandardOutput=syslog
-StandardError=syslog
+StandardOutput=journal
+StandardError=journal
 SyslogIdentifier=kidclock
 
 [Install]
