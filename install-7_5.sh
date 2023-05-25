@@ -41,21 +41,21 @@ def num_to_words(num, join_tens=False):
 
 # Minute rhymes
 minute_rhymes = {
-    'zero': ["let's go for a walk", "I'm bored, you wanna talk?", "put on warm fuzzy socks", "dump GameStop stock", "party on our block!"],
-    'one': ["the day has just begun", "let's have some fun", "enjoy the sun", "abolish war and guns", "fight the system, it's just begun", "read a book for fun"],
-    'two': ["paint your nails blue", "we don't need any shoes", "there's so much to do", "free the animals in the zoo", "two books, one for me, one for you"],
+    'zero': ["let's go for a walk", "I'm bored, you wanna talk?", "put on warm fuzzy socks", "dump GameStop stock", "party on our block", "the Captain is Spock"],
+    'one': ["the day has just begun", "let's have some fun", "enjoy the sun", "abolish war and guns", "fight the system, it's just begun", "read a book for fun", "you should know that you stun"],
+    'two': ["paint your nails blue", "kick off your shoes", "there's so much to do", "free the animals in the zoo", "two books, one for me, one for you", "overthrowing the government is a coup"],
     'three': ["the pollinating bee", "climb the oak trees", "I once had a Peruvian monkey", "may you always be free", "busy as a bee", "more than what you see", "free thought, let it be"],
     'four': ["open the magic door", "roll on the floor", "avoid the stores", "let's explore the shore", "end all war", "ideas, let them pour", "writing code we adore"],
     'five': ["let's go for a drive", "pretty UI", "brah, high five", "may you feel so alive", "let's strive to thrive", "always question why", "with books, imaginations thrive"],
-    'six': ["pick up sticks", "a mason lays bricks", "Allie loves to give licks", "all things can be fixed", "learn magic tricks"],
+    'six': ["pick up sticks", "a mason lays bricks", "Allie loves to give licks", "all things can be fixed", "learn magic tricks", "let's see Stevie Nicks"],
     'seven': ["nothing rhymes with seven", "stairway to heaven", "some bread has no leaven"],
-    'eight': ["it's never too late", "Skyler, you're so great", "there's no room for hate", "books stimulate"],
+    'eight': ["it's never too late", "Skyler, you're so great", "a metamorphic rock is slate", "there's no room for hate", "books stimulate", "let's go on a date"],
     'nine': ["you're fine and divine", "you make the stars align", "everything's going fine", "I see you shine", "I love that you're mine", "your code and mine", "challenge the line", "on cloud nine with a good storyline"],
     'ten': ["a fireplace in the den", "an egg-laying chicken is a hen", "make art with ink and pen", "pushing changes again"],
-    'eleven': ["almost seven", "like a slice of heaven", "I'll be home by seven"],
+    'eleven': ["almost seven", "like a slice of heaven", "I'll be home by seven", "my godson is Devon"],
     'twelve': ["galaxy on the shelf", "happy plants on the shelf", "I like pooping by myself", "pretty plants on the shelf", "be proud of yourself", "stories the library delves", "pick a book from the shelf"],
-    'teen': ["it's not a bad idea to clean", "put down the screen", "always follow your dreams", "revolution is clean"],
-    'ty': ["let's feed the birdies", "Skyler you're so pretty", "let's visit the city", "Skyler, you're so witty"]
+    'teen': ["it's not a bad idea to clean", "put down the screen", "always follow your dreams", "revolution is clean", "Jack had a magic bean"],
+    'ty': ["let's feed the birdies", "Skyler, you're so pretty", "let's visit the city", "Skyler, you're so witty"]
 }
 
 def create_rhyme(hour, minute):
@@ -73,7 +73,7 @@ def create_rhyme(hour, minute):
 
     # Special cases for minute words
     if minute == 0:
-        minute_word = 'o clock'
+        minute_word = "o' clock"
         minute_rhyme = random.choice(minute_rhymes['zero'])
     elif 1 <= minute <= 9:
         minute_word = f"o' {num_to_words(minute).lower()}"
@@ -130,20 +130,20 @@ epd.init()
 epd.Clear()
 
 # Prepare for drawing
-image = Image.new('1', (epd.width, epd.height), 255)  # width and height in correct order
+image = Image.new('1', (epd.width, epd.height), 255)
 draw = ImageDraw.Draw(image)
-font36 = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 36)
-font16 = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 16)
+font64 = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 64)
+font32 = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 32)
 
-def display_splash_screens(epd, image_path1, image_path2, display_time):
-    for image_path in [image_path1, image_path2]:
+def display_splash_screens(epd, image_path1,  display_time):
+    for image_path in [image_path1]:
         print(f'Displaying splash screen: {image_path}')
         image = Image.open(image_path).convert("L")
         aspect_ratio = image.width / image.height
         new_width = epd.width
         new_height = int(new_width / aspect_ratio)
         image = image.resize((new_width, new_height), Image.ANTIALIAS)
-        image_bw = Image.new("1", (epd.width, epd.height), 255)  # width and height in correct order
+        image_bw = Image.new("1", (epd.width, epd.height), 255)
         image_bw.paste(image, ((epd.width - new_width) // 2, (epd.height - new_height) // 2))
 
         epd.display(epd.getbuffer(image_bw))
@@ -151,9 +151,8 @@ def display_splash_screens(epd, image_path1, image_path2, display_time):
         epd.init()
 
 # Display splash screens
-splash_image_path1 = "/home/pi/splash-lg.png"
-splash_image_path2 = "/home/pi/splash-sky-clock.png"
-display_splash_screens(epd, splash_image_path1, splash_image_path2, 3)
+splash_image_path1 = "/home/pi/splash-sky-clock.png"
+display_splash_screens(epd, splash_image_path1, 2)
 
 while True:
     # Fetch the current time
@@ -164,20 +163,20 @@ while True:
     current_rhyme = rhymes[rhyme_index].strip()
 
     # Clear the image
-    draw.rectangle([(0,0),(epd.width, epd.height)], fill = 255)  # width and height in correct order
+    draw.rectangle([(0,0),(epd.width, epd.height)], fill = 255)  
 
     # Draw the time and the rhyme
-    draw.text((40, 40), current_time, font = font16, fill = 0)  # No need for the anchor, text will start from top-left
+    draw.text((40, 48), current_time, font = font32, fill = 0)  
 
     # Wrap the rhyme text
-    wrap_rhyme = textwrap.wrap(current_rhyme, width=26)
+    wrap_rhyme = textwrap.wrap(current_rhyme, width=20)
 
     for i, line in enumerate(wrap_rhyme):
-        y_text = 84 + i*42  # the y-position for each line of text (adjusted to 36 to match the font size)
-        draw.text((30, y_text), line, font=font36, fill=0)  # start text from left, adjusted to each new line
+        y_text = 128 + i*76
+        draw.text((40, y_text), line, font=font64, fill=0)
 
     # Rotate the image
-    rotated_image = image.rotate(-90, expand=True)  # rotate clockwise
+    rotated_image = image.rotate(-90, expand=True)
 
     # Update the display
     epd.display(epd.getbuffer(rotated_image))
