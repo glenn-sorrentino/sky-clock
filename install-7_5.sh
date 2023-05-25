@@ -121,8 +121,11 @@ from waveshare_epd import epd7in5_V2
 from PIL import Image, ImageDraw, ImageFont
 
 # Fetch rhymes from the file
-with open('/home/pi/rhymes.txt', 'r') as rhymes_file:
-    rhymes = rhymes_file.readlines()
+def get_rhymes():
+    with open('/home/pi/rhymes.txt', 'r') as rhymes_file:
+        return rhymes_file.readlines()
+
+rhymes = get_rhymes()
 
 # Setup the e-ink display
 epd = epd7in5_V2.EPD()
@@ -154,10 +157,22 @@ def display_splash_screens(epd, image_path1,  display_time):
 splash_image_path1 = "/home/pi/splash-sky-clock.png"
 display_splash_screens(epd, splash_image_path1, 2)
 
+# Main execution
+def generate_rhymes():
+    with open('/home/pi/rhymes.txt', 'w') as rhymes_file:
+        for hour in range(24):
+            for minute in range(60):
+                rhymes_file.write(create_rhyme(hour, minute) + "\n")
+
 while True:
     # Fetch the current time
     now = datetime.now()
     current_time = now.strftime("%l:%M %p").lstrip()  # lstrip to remove any leading space
+
+    # Check if it's midnight, if yes, then regenerate rhymes
+    if now.hour == 0 and now.minute == 0:
+        generate_rhymes()
+        rhymes = get_rhymes()
 
     rhyme_index = now.hour * 60 + now.minute
     current_rhyme = rhymes[rhyme_index].strip()
