@@ -136,7 +136,7 @@ epd.Clear()
 image = Image.new('1', (epd.width, epd.height), 255)
 draw = ImageDraw.Draw(image)
 font64 = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 64)
-font32 = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 32)
+font32 = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf', 32)
 
 def display_splash_screens(epd, image_path1,  display_time):
     for image_path in [image_path1]:
